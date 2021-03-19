@@ -9,7 +9,7 @@ include_once "../headers.php";
 include_once "../dbsetting_n_connect.php";
 
 function getLastID(){
-    $query = "SELECT LAST_INSERT_ID() FROM `global` ";
+    $query = "SELECT MAX(`id`) FROM `global` ";
 
     global $mysql;
     $res = $mysql->query($query);
