@@ -1,6 +1,6 @@
 <?php
-$logindb="host1490316_hellgame";
-$passdb="q1w2e3r4t5y";
-$dbhost="localhost";
-$dbname="host1490316";
+$logindb="birthhelper";
+$passdb="q1w2e3r4t5y6";
+$dbhost="185.178.46.248";
+$dbname="hellgame";
 
