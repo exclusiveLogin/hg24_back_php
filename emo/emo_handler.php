@@ -23,7 +23,7 @@ function getLastID(){
 function getDelta( $login ){
 
   
-  $query = "SELECT * FROM `user_emo` WHERE `login`=\"$login\" ORDER BY `id` DESC LIMIT 1";
+  $query = "SELECT * FROM `user_emo` WHERE `login`=\"$login\" ORDER BY `datetime` DESC LIMIT 1";
 
     global $mysql;
     $res = $mysql->query($query);
@@ -76,7 +76,7 @@ if ( $_SERVER['REQUEST_METHOD'] === 'GET' ) {
       $skip = isset($_GET['skip']) && !!$_GET['skip'] ? ' OFFSET '.$_GET['skip'] : '';
       $login = $_GET['login'];
 
-      $q = "SELECT *, UNIX_TIMESTAMP(`datetime`)*1000 AS `utc` FROM `user_emo` WHERE `login`=\"$login\" ORDER BY `id` DESC $limit $skip";
+      $q = "SELECT *, UNIX_TIMESTAMP(`datetime`)*1000 AS `utc` FROM `user_emo` WHERE `login`=\"$login\" ORDER BY `datetime` DESC $limit $skip";
     }
 
     if( $q ){
