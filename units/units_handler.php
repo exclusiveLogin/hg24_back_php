@@ -1,9 +1,4 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Headers: content-type");
-header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Request-Method: POST, GET, OPTION");
-
 
 include_once "../headers.php";
 include_once "../dbsetting_n_connect.php";
@@ -13,18 +8,66 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
 
   if( isset($arr['mode'] ) && $arr['mode'] === 'add_unit'){
 
-    $segment = isset($arr['segment']) ? '"'.$arr['segment'].'"'  : 'NULL';
+    $status = isset($arr['status']) ? '"'.$arr['status'].'"'  : 'NULL';
     $level = isset($arr['level']) ? '"'.$arr['level'].'"' : 'global';
-    $author  = isset($arr['author']) ? '"'.$arr['author'].'"' : 'NULL';
-    $title = isset($arr['title']) ? '"'.$arr['title'].'"' : 'NULL';
+    $name  = isset($arr['name']) ? '"'.$arr['name'].'"' : 'NULL';
     $description = isset($arr['description']) ?  '"'.$arr['description'].'"'  : 'NULL';
-    $desktop_notify = isset($arr['desktop_notify']) ? $arr['desktop_notify'] : 'NULL';
-    $telegram_notify = isset($arr['telegram_notify']) ? $arr['telegram_notify'] : 'NULL';
-    $push_notify = isset($arr['push_notify']) ? $arr['push_notify'] : 'NULL';
-    $img = isset($arr['img']) ? '"'.$arr['img'].'"' : 'NULL';
+    $class = isset($arr['class']) ? '"'.$arr['class'].'"' : 'NULL';
+    $active = isset($arr['active']) ? $arr['active'] : 'NULL';
+    $snow = isset($arr['snow']) ? $arr['snow'] : 'NULL';
+    $rain = isset($arr['rain']) ? $arr['rain'] : 'NULL';
+    $clearsky = isset($arr['clearsky']) ? $arr['clearsky'] : 'NULL';
 
-    $q = "INSERT INTO `events` ( `author`, `title`, `description`, `level`, `segment`, `desktop_notify`, `push_notify`, `telegram_notify`, `img` ) 
-          VALUES ( $author, $title, $description, $level, $segment, $desktop_notify, $push_notify, $telegram_notify, $img )";
+
+    $overcast = isset($arr['overcast']) ? $arr['overcast'] : 'NULL';
+    $temperature_min = isset($arr['temperature_min']) ? $arr['temperature_min'] : 'NULL';
+    $temperature_max = isset($arr['temperature_max']) ? $arr['temperature_max'] : 'NULL';
+    $wind_min = isset($arr['wind_min']) ? $arr['wind_min'] : 'NULL';
+    $wind_max = isset($arr['wind_max']) ? $arr['wind_max'] : 'NULL';
+
+    $speed = isset($arr['speed']) ? $arr['speed'] : 'NULL';
+
+    $lat = isset($arr['lat']) ?  '"'.$arr['lat'].'"'  : 'NULL';
+    $lng = isset($arr['lng']) ?  '"'.$arr['lng'].'"'  : 'NULL';
+
+    $q = "INSERT INTO `units` ( 
+        `status`, 
+        `level`, 
+        `name`, 
+        `description`, 
+        `class`, 
+        `active`, 
+        `snow`, 
+        `rain`, 
+        `clearsky`,
+        `overcast`,
+        `temperature_min`,
+        `temperature_max`,
+        `wind_min`,
+        `wind_max`,
+        `speed`,
+        `lat`,
+        `lng`,
+        ) 
+          VALUES ( 
+              $status, 
+              $level, 
+              $name, 
+              $description, 
+              $class, 
+              $active, 
+              $snow, 
+              $rain, 
+              $clearsky, 
+              $overcast, 
+              $temperature_min,
+              $temperature_max,
+              $wind_min,
+              $wind_max,
+              $speed, 
+              $lat, 
+              $lng, 
+              )";
 
 
     $mysql->query( $q );
@@ -41,35 +84,23 @@ if ( $_SERVER['REQUEST_METHOD'] === 'GET' ) {
   $limit = isset($_GET['limit']) ? ' LIMIT '.$_GET['limit'] : ' LIMIT 100 ';
 
 
-  if( isset($_GET['mode']) && $_GET['mode'] == 'get_all_events'){
-    $q = "SELECT * FROM `events` $limit";
+  if( isset($_GET['mode']) && $_GET['mode'] == 'get_all_units'){
+    $q = "SELECT * FROM `units` $limit";
   }
 
-  if( isset($_GET['mode']) && isset($_GET['author']) && $_GET['mode'] === 'get_events_by_author' ){
-    $author = $_GET['author'];
-
-    $q = "SELECT * FROM `events` WHERE `author` = \"$author\" $limit";
+  if( isset($_GET['mode']) && isset($_GET['status']) && $_GET['mode'] === 'get_units_by_status' ){
+    $status = $_GET['status'];
+    $q = "SELECT * FROM `units` WHERE `status` = \"$status\" $limit";
   }
 
-  if( isset($_GET['mode']) && isset($_GET['segment']) && $_GET['mode'] === 'get_events_by_level' ){
+  if( isset($_GET['mode']) && isset($_GET['level']) && $_GET['mode'] === 'get_units_by_level' ){
     $level = $_GET['level'];
-    $q = "SELECT * FROM `events` WHERE `level` = \"$level\" $limit";
+    $q = "SELECT * FROM `units` WHERE `level` = $level $limit";
   }
 
-  if( isset($_GET['mode']) && isset($_GET['segment']) && $_GET['mode'] === 'get_events_by_segment' ){
-    $segment = $_GET['segment'];
-    $q = "SELECT * FROM `events` WHERE `segment` = \"$segment\" $limit";
+  if( isset($_GET['mode']) && $_GET['mode'] === 'get_active_units' ){
+    $q = "SELECT * FROM `units` WHERE `active` = 1 $limit";
   }
-
-  if( isset($_GET['mode']) && isset($_GET['id']) && $_GET['mode'] === 'get_new_events' ){
-    $last_id = $_GET['id'];
-    $q = "SELECT * FROM `events` WHERE `id` > $last_id ";
-  }
-
-  if( isset($_GET['mode']) && $_GET['mode'] === 'get_last_event' ){
-    $q = "SELECT * FROM `events` ORDER BY `id` DESC LIMIT 1";
-  }
-
 
   if( $q ){
     $json = array();
