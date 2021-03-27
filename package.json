@@ -1,0 +1,22 @@
+{
+  "name": "hg24_back_php",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "docker:build": "docker build -t exclusivelogin/hellgame24-back .",
+    "docker:publish": "npm run docker:build && docker login && docker push exclusivelogin/hellgame24-back",
+    "docker:run": "docker pull exclusivelogin/birthhelper-back && docker run --rm -d -p 8093:80 exclusivelogin/hellgame24-back"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/exclusiveLogin/hg24_back_php.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/exclusiveLogin/hg24_back_php/issues"
+  },
+  "homepage": "https://github.com/exclusiveLogin/hg24_back_php#readme"
+}
