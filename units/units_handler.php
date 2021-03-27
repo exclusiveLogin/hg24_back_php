@@ -20,6 +20,19 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
     
   }
 
+  if( isset($arr['operation']) && $arr['operation'] == 'remove_all' ){
+    
+    if($id){
+        $query = "DELETE FROM `units`";
+        $mysql->query($query);
+        array_push($arr, array('q' => $query, "deleted units" => "all"));
+    } else array_push($arr, array('q' => $query, "error" => 'no_id'));
+    
+
+    echo json_encode( $arr );
+    
+  }
+
   if( isset($arr['mode'] ) && $arr['mode'] === 'add_unit'){
 
     $status = isset($arr['status']) ? '"'.$arr['status'].'"'  : 'NULL';
