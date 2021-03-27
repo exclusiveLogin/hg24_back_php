@@ -6,6 +6,20 @@ include_once "../dbsetting_n_connect.php";
 if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
   $arr = json_decode(file_get_contents('php://input'), true);
 
+  if( isset($arr['operation']) && isset($arr['id']) && $arr['operation'] == 'remove' ){
+    $id = isset($arr['id']) ? $arr['id'] : NULL;
+    
+    if($id){
+        $query = "DELETE FROM `units` WHERE `id`= $id";
+        $mysql->query($query);
+        array_push($arr, array('q' => $query, "deleted_id" => $id));
+    } else array_push($arr, array('q' => $query, "error" => 'no_id'));
+    
+
+    echo json_encode( $arr );
+    
+  }
+
   if( isset($arr['mode'] ) && $arr['mode'] === 'add_unit'){
 
     $status = isset($arr['status']) ? '"'.$arr['status'].'"'  : 'NULL';
