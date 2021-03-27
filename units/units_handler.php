@@ -21,14 +21,9 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
   }
 
   if( isset($arr['operation']) && $arr['operation'] == 'remove_all' ){
-    
-    if($id){
-        $query = "DELETE FROM `units`";
-        $mysql->query($query);
-        array_push($arr, array('q' => $query, "deleted units" => "all"));
-    } else array_push($arr, array('q' => $query, "error" => 'no_id'));
-    
-
+    $query = "DELETE FROM `units`";
+    $mysql->query($query);
+    array_push($arr, array('q' => $query, "deleted units" => "all"));
     echo json_encode( $arr );
     
   }
