@@ -30,8 +30,8 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
 
   if( isset($arr['mode'] ) && $arr['mode'] === 'add_unit'){
 
-    $status = isset($arr['status']) ? '"'.$arr['status'].'"'  : 'NULL';
-    $level = isset($arr['level']) ? '"'.$arr['level'].'"' : 'global';
+    $status = isset($arr['status']) ? '"'.$arr['status'].'"'  : "\"added\"";
+    $level = isset($arr['level']) ? '"'.$arr['level'].'"' : 1;
     $name  = isset($arr['name']) ? '"'.$arr['name'].'"' : 'NULL';
     $description = isset($arr['description']) ?  '"'.$arr['description'].'"'  : 'NULL';
     $class = isset($arr['class']) ? '"'.$arr['class'].'"' : 'NULL';
@@ -52,44 +52,8 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
     $lat = isset($arr['lat']) ?  '"'.$arr['lat'].'"'  : 'NULL';
     $lng = isset($arr['lng']) ?  '"'.$arr['lng'].'"'  : 'NULL';
 
-    $q = "INSERT INTO `units` ( 
-        `status`, 
-        `level`, 
-        `name`, 
-        `description`, 
-        `class`, 
-        `active`, 
-        `snow`, 
-        `rain`, 
-        `clearsky`,
-        `overcast`,
-        `temperature_min`,
-        `temperature_max`,
-        `wind_min`,
-        `wind_max`,
-        `speed`,
-        `lat`,
-        `lng`
-        ) 
-          VALUES ( 
-              $status, 
-              $level, 
-              $name, 
-              $description, 
-              $class, 
-              $active, 
-              $snow, 
-              $rain, 
-              $clearsky, 
-              $overcast, 
-              $temperature_min,
-              $temperature_max,
-              $wind_min,
-              $wind_max,
-              $speed, 
-              $lat, 
-              $lng
-              )";
+    $q = "INSERT INTO `units` ( `status`, `level`, `name`, `description`, `class`, `active`, `snow`, `rain`, `clearsky`, `overcast`, `temperature_min`, `temperature_max`, `wind_min`, `wind_max`, `speed`, `lat`, `lng`) 
+          VALUES ($status, $level, $name, $description, $class, $active, $snow, $rain, $clearsky, $overcast, $temperature_min, $temperature_max, $wind_min, $wind_max,$speed, $lat, $lng)";
 
 
     $mysql->query( $q );
