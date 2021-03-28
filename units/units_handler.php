@@ -69,7 +69,7 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
         `wind_max`,
         `speed`,
         `lat`,
-        `lng`,
+        `lng`
         ) 
           VALUES ( 
               $status, 
@@ -88,7 +88,7 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
               $wind_max,
               $speed, 
               $lat, 
-              $lng, 
+              $lng
               )";
 
 
