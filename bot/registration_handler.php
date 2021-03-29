@@ -14,6 +14,8 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
         $mysql->query($query);
         array_push($arr, array('q' => $query, "deleted_id" => $id));
     } else array_push($arr, array('q' => $query, "error" => 'no_id'));
+
+    if($mysql->error) echo json_encode($mysql->error);
     
 
     echo json_encode( $arr );
@@ -41,22 +43,39 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
 
     $mysql->query( $q );
 
+    if($mysql->error) echo json_encode($mysql->error);
+
     $arr = array_merge( $arr, array( "q" => $q ) );
 
     echo json_encode($arr);
   }
-}
 
-if( isset($arr['operation'] ) && isset($arr['chat_id'] ) && $arr['operation'] === 'activate_registration'){
+  if( isset($arr['operation'] ) && isset($arr['chat_id'] ) && $arr['operation'] === 'activate_registration'){
 
+      $chat_id = $arr['chat_id'];
+      $username = isset($arr['username']) ? '"'.$arr['username'].'"' : 'NULL';
+      $active  = '1';
+    
+      $q = "UPDATE `bot_registrations` SET `active` = '1' WHERE `chat_id` = $chat_id";
+
+
+      $mysql->query( $q );
+
+      if($mysql->error) echo json_encode($mysql->error);
+
+      $arr = array_merge( $arr, array( "q" => $q ) );
+
+      echo json_encode($arr);
+  }
+
+  if( isset($arr['operation'] ) && isset($arr['chat_id'] ) && $arr['operation'] === 'deactivate_registration'){
     $chat_id = $arr['chat_id'];
-    $username = isset($arr['username']) ? '"'.$arr['username'].'"' : 'NULL';
-    $active  = '1';
-   
-    $q = "UPDATE `bot_registrations` SET `active` = '1' WHERE `chat_id` = $chat_id;
+    $q = "UPDATE `bot_registrations` SET `active` = 'NULL' WHERE `chat_id` = $chat_id";
 
 
     $mysql->query( $q );
+
+    if($mysql->error) echo json_encode($mysql->error);
 
     $arr = array_merge( $arr, array( "q" => $q ) );
 
@@ -82,6 +101,9 @@ if ( $_SERVER['REQUEST_METHOD'] === 'GET' ) {
     $json = array();
 
     $res = $mysql->query( $q );
+
+    if($mysql->error) echo json_encode($mysql->error);
+
     $row = $res ? $res->fetch_assoc() : false;
 
     while( $row ){
