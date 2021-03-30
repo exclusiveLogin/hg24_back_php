@@ -70,7 +70,7 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
 
   if( isset($arr['operation'] ) && isset($arr['chat_id'] ) && $arr['operation'] === 'deactivate_registration'){
     $chat_id = $arr['chat_id'];
-    $q = "UPDATE `bot_registrations` SET `active` = 'NULL' WHERE `chat_id` = $chat_id";
+    $q = "UPDATE `bot_registrations` SET `active` = NULL WHERE `chat_id` = $chat_id";
 
 
     $mysql->query( $q );
