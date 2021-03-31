@@ -8,7 +8,7 @@ if($mysql->connect_errno)die("error db:".$mysql->connect_error);
 $mysql->query("SET time_zone = '+04:00'");
 $mysql->query("SET NAMES 'UTF8';");
 
-$query="SELECT `id_user`, `name`, `email`, `title`, `login`, `silent`, UNIX_TIMESTAMP(`upd`) * 1000 as `upd` , `img_big`, `img_min`
+$query="SELECT `id_user`, `name`, `email`, `title`, `login`, `silent`, `admin`, UNIX_TIMESTAMP(`upd`) * 1000 as `upd` , `img_big`, `img_min`
         FROM `users` 
         LEFT JOIN `users_act` 
         ON `users`.`id`=`users_act`.`id_user`";
