@@ -65,7 +65,7 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
 
   if( isset($arr['mode'] ) && $arr['mode'] === 'move_unit'){
 
-    if (isset($arr['lat'] && isset($arr['lng']) && isset($arr['id'])) {
+    if (isset($arr['lat']) && isset($arr['lng']) && isset($arr['id'])) {
       $id = $arr['id'];
       $lat = '"'.$arr['lat'].'"';
       $lng = '"'.$arr['lng'].'"';
