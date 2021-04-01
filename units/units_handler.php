@@ -62,6 +62,25 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
 
     echo json_encode($arr);
   }
+
+  if( isset($arr['mode'] ) && $arr['mode'] === 'move_unit'){
+
+    if (isset($arr['lat'] && isset($arr['lng']) && isset($arr['id'])) {
+      $id = $arr['id'];
+      $lat = '"'.$arr['lat'].'"';
+      $lng = '"'.$arr['lng'].'"';
+    }
+  
+    $q = "UPDATE `units` SET `lat` = $lat, `lng`= $lng 
+          WHERE `id` = $id";
+
+
+    $mysql->query( $q );
+
+    $arr = array_merge( $arr, array( "q" => $q ) );
+
+    echo json_encode($arr);
+  }
 }
 
 // GETTERS
