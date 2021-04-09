@@ -25,23 +25,19 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
 if ( $_SERVER['REQUEST_METHOD'] === 'GET' ) {
 
   if( isset($_GET['mode']) && $_GET['mode'] == 'get_all_segments'){
-    $q = "SELECT * FROM `update_segment`";
+    $q = "SELECT * FROM `update_segment` WHERE `id` IN (SELECT MAX(`id`) FROM `update_segment` GROUP BY `segment`)";
   }
 
   if( isset($_GET['mode']) && isset($_GET['segment']) && $_GET['mode'] === 'get_segment' ){
     $segment = $_GET['segment'];
-    $q = "SELECT * FROM `update_segment` WHERE `segment` = \"$segment\"";
-  }
-
-  if( isset($_GET['mode']) && isset($_GET['segment']) && isset($_GET['old_date']) && $_GET['mode'] === 'get_fresh_segments' ){
-    $segment = $_GET['segment'];
-    $old_date = $_GET['old_date'];
-    $q = "SELECT * FROM `update_segment` WHERE `updated` > TIMESTAMP( \"$old_date\" )";
+    $q = "SELECT * FROM `update_segment` WHERE `id` IN (SELECT MAX(`id`) FROM `update_segment` GROUP BY `segment`) AND `segment` = \"$segment\"";
   }
 
   if( isset($_GET['login']) ){
     $login = $_GET['login'];
-    $_q = "UPDATE `users_act` SET `upd` = NOW() WHERE `id_user` = ( SELECT `id` FROM `users` WHERE `login`= \"$login\" )";
+    $_q = "INSERT INTO `users_act` ( `id_user`, `upd` ) 
+            VALUES (( SELECT `id` FROM `users` WHERE `login`= \"$login\" ), NOW())
+            ON DUPLICATE KEY UPDATE `upd` = NOW()";
     $mysql->query( $_q );
   }
 

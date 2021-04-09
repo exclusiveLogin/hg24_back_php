@@ -1,16 +1,17 @@
 <?php
-header("Access-Control-Allow-Origin:*");
-include_once "dbsetting.php";
-$mysql= new mysqli($dbhost,$logindb,$passdb,$dbname);
+
+include_once "headers.php";
+include_once "dbsetting_n_connect.php";
+
 if($mysql->connect_errno)die("error db:".$mysql->connect_error);
+
 $mysql->query("SET time_zone = '+04:00'");
 $mysql->query("SET NAMES 'UTF8';");
 
-$query="SELECT `id_user`,`name`,`email`,
-        `title`,`login`,`played`,`online`,
-        UNIX_TIMESTAMP(`upd`) * 1000 as `upd` ,`img_big`,`img_min` 
-        FROM `users`,`users_act` 
-        WHERE `users`.`id`=`users_act`.`id_user`";
+$query="SELECT `id_user`, `name`, `email`, `title`, `login`, `silent`, `admin`, UNIX_TIMESTAMP(`upd`) * 1000 as `upd` , `img_big`, `img_min`
+        FROM `users` 
+        LEFT JOIN `users_act` 
+        ON `users`.`id`=`users_act`.`id_user`";
 
 
 

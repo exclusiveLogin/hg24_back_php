@@ -37,7 +37,7 @@ function removeItem($id){
 function createNewSlotByUser( $_owner ){
   $query = "INSERT INTO `object_slots` (`owner`, `owner_type`) VALUES ( \"$_owner\", \"user\" )";
   //Берем последний id созданного
-  $query2 = "SELECT LAST_INSERT_ID() FROM `object_slots` ";
+  $query2 = "SELECT `id` FROM `object_slots` ORDER BY `datetime_update` DESC LIMIT 1";
 
   global $mysql;
   $mysql->query($query);
@@ -52,7 +52,7 @@ function createNewSlotByUser( $_owner ){
 function createNewSlot(){
   $query = "INSERT INTO `object_slots` (`owner_type`) VALUES ( \"map\" )";
   //Берем последний id созданного
-  $query2 = "SELECT LAST_INSERT_ID() FROM `object_slots` ";
+  $query2 = "SELECT `id` FROM `object_slots` ORDER BY `datetime_update` DESC LIMIT 1";
 
   global $mysql;
   $mysql->query($query);
@@ -81,7 +81,7 @@ function craftNewRGO( $_object_id, $_creator_name, $_slot){
   //создаем новый RGO
   $query = "INSERT INTO `real_game_objects` (`object_id`, `creator_name`) VALUES ( $_object_id, \"$_creator_name\" )";
   //Берем последний id созданного
-  $query2 = "SELECT LAST_INSERT_ID() FROM `real_game_objects` ";
+  $query2 = "SELECT `id` FROM `real_game_objects` ORDER BY `datetime_update` DESC LIMIT 1";
 
   global $mysql;
   $mysql->query($query);
@@ -89,10 +89,6 @@ function craftNewRGO( $_object_id, $_creator_name, $_slot){
   $row = $res->fetch_row();
   $rgo = $row[0]; // id нового созданного RGO
   if($rgo){
-    //связываем слот с созданным RGO
-
-    //$query_upd_slot = "UPDATE `object_slots` SET `rgo_id` = $rgo WHERE `id` = $_slot";
-    //$mysql->query($query_upd_slot);
     linkSlotOnRGO( $_slot, $rgo);
   }
 
@@ -102,7 +98,7 @@ function spawnNewRGO( $_object_id ){
   //создаем новый RGO
   $query = "INSERT INTO `real_game_objects` (`object_id`) VALUES ( $_object_id )";
   //Берем последний id созданного
-  $query2 = "SELECT LAST_INSERT_ID() FROM `real_game_objects` ";
+  $query2 = "SELECT `id` FROM `real_game_objects` ORDER BY `datetime_update` DESC LIMIT 1";
 
   global $mysql;
   $mysql->query($query);
